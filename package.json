@@ -1,0 +1,22 @@
+{
+  "name": "potswap-api",
+  "version": "0.0.0",
+  "description": "RESTful API for the PotSwap app",
+  "main": "server.js",
+  "dependencies": {
+    "restify": "~4.0.4"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/rhsyen/potswap-api.git"
+  },
+  "author": "Roderick Yen",
+  "license": "BSD-2-Clause",
+  "bugs": {
+    "url": "https://github.com/rhsyen/potswap-api/issues"
+  }
+}
