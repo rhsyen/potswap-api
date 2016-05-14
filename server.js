@@ -7,9 +7,9 @@
 var express = require('express'); // call express
 var app = express(); // define our app using express
 var bodyParser = require('body-parser');
-var Bear = require('./app/models/bear');
 var User = require('./app/models/user');
 var mongoose = require('mongoose');
+var bcrypt = require('bcrypt');
 
 // configure app to use bodyParser()
 // this will let us get the data from a POST
@@ -27,8 +27,8 @@ mongoose.connect('mongodb://potswapadmin:potswap@ds019882.mlab.com:19882/potswap
 // =============================================================================
 var router = express.Router(); // get an instance of the express Router
 
-router.route('/users')
-    .post(function(req, res) {
+router.route('/records')
+    .post(function(req, res) { // Create new user
         var user = new User();
         user.email = req.body.email;
         user.password = req.body.password; // encrypted in user.js
@@ -36,13 +36,14 @@ router.route('/users')
         user.save(function(err) {
             if (err) {
                 res.send(err);
+            } else {
+                res.json({
+                    message: 'User created'
+                });
             }
-            res.json({
-                message: 'User created'
-            });
         });
     })
-    .get(function(req, res) {
+    .get(function(req, res) { // Get all users (for debug)
         User.find(function(err, users) {
             if (err) {
                 res.send(err);
@@ -51,63 +52,22 @@ router.route('/users')
         });
     });
 
-router.route('/bears')
-    .post(function(req, res) {
-        var bear = new Bear();
-        bear.name = req.body.name;
-        bear.save(function(err) {
-            if (err) {
-                res.send(err);
-            }
-            res.json({
-                message: 'Bear created!'
-            });
-        });
-    })
-    .get(function(req, res) {
-        Bear.find(function(err, bears) {
-            if (err) {
-                res.send(err);
-            }
-            res.json(bears);
-        });
-    });
-
-router.route('/bears/:bear_id')
-    .get(function(req, res) {
-        Bear.findById(req.params.bear_id, function(err, bear) {
-            if (err) {
-                res.send(err);
-            }
-            res.json(bear);
-        });
-    })
-    .put(function(req, res) {
-        Bear.findById(req.params.bear_id, function(err, bear) {
-            if (err) {
-                res.send(err);
-            }
-            bear.name = req.body.name;
-            bear.save(function(err) {
-                if (err) {
-                    res.send(err);
-                }
-                res.json({
-                    message: 'Bear updated!'
+router.route('/users')
+    .post(function(req, res) { // Log in
+        User.findOne({
+            'email' : req.body.email
+        }, function(err, user) {
+            if (err || !user) {
+                res.status(401).send(err);
+            } else {
+                bcrypt.compare(req.body.password, user.password, function(err, matched) {
+                    if (err || !matched) {
+                        res.status(401).send(err);
+                    } else {
+                        res.send({ accessToken: 'someToken' });
+                    }
                 });
-            });
-        });
-    })
-    .delete(function(req, res) {
-        Bear.remove({
-            _id: req.params.bear_id
-        }, function(err, bear) {
-            if (err) {
-                res.send(err);
             }
-            res.json({
-                message: 'Successfully deleted'
-            });
         });
     });
 
@@ -118,4 +78,4 @@ app.use('/api', router);
 // START THE SERVER
 // =============================================================================
 app.listen(port);
-console.log('Magic happens on port ' + port);
+console.log('Magic happens on port ' + port + ' on ' + Date());

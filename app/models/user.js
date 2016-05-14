@@ -9,7 +9,10 @@ function setPassword(val) {
 }
 
 var UserSchema = new Schema({
-  email: String,
+  email: {
+      type: String,
+      unique: true
+  },
   password: {
       type: String,
       set: setPassword
