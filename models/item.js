@@ -3,7 +3,7 @@ var Schema = mongoose.Schema;
 
 var ItemSchema = new Schema({
   owner: String, // e-mail of owner
-  name: String,
+  name: String, // Unique per owner
   description: String
   // photos, category
 });

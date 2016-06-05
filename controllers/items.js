@@ -13,17 +13,29 @@ router.route('/items')
         });
     })
     .post(function(req, res) { // Create an item
-        var item = new Item();
-        item.name = req.body.name;
-        item.description = req.body.description;
-        item.owner = req.body.email;
-        item.save(function(err) {
-            if (err) {
-                res.send(err);
-            } else {
+        Item.findOne({
+            'email': req.body.email,
+            'name' : req.body.name
+        }, function(err, savedItem) {
+            if (err || savedItem) {
                 res.json({
-                    message: 'Item created',
-                    data: item
+                    success: false,
+                    message: 'Duplicate item'
+                });
+            } else {
+                var item = new Item();
+                item.name = req.body.name;
+                item.description = req.body.description;
+                item.owner = req.body.email;
+                item.save(function(err) {
+                    if (err) {
+                        res.send(err);
+                    } else {
+                        res.json({
+                            message: 'Item created',
+                            data: item
+                        });
+                    }
                 });
             }
         });
