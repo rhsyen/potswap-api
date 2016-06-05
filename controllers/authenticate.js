@@ -6,7 +6,7 @@ router.route('/authenticate')
     .post(function(req, res) { // Log in
         // body.email, body.password required
         User.findOne({
-            'email' : req.body.email
+            'email': req.body.email
         }, function(err, user) {
             if (err || !user) {
                 res.status(401).send(err);

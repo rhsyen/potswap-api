@@ -18,7 +18,9 @@ var User = require('./models/user');
 var port = process.env.PORT || 8080;
 mongoose.connect(process.env.DB_STRING);
 app.set('mySecret', process.env.SECRET);
-app.use(bodyParser.urlencoded({ extended: true }));
+app.use(bodyParser.urlencoded({
+    extended: true
+}));
 app.use(bodyParser.json());
 app.use(bearerToken());
 app.use(morgan('dev'));

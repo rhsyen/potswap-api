@@ -1,29 +1,29 @@
 {
-  "name": "potswap-api",
-  "version": "0.0.0",
-  "description": "RESTful API for the PotSwap app",
-  "main": "server.js",
-  "dependencies": {
-    "bcrypt": "^0.8.6",
-    "body-parser": "^1.15.1",
-    "dotenv": "^2.0.0",
-    "express": "^4.13.4",
-    "express-bearer-token": "^2.1.0",
-    "jsonwebtoken": "^7.0.0",
-    "mongoose": "^4.4.19",
-    "morgan": "^1.7.0"
-  },
-  "devDependencies": {},
-  "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
-  },
-  "repository": {
-    "type": "git",
-    "url": "https://github.com/rhsyen/potswap-api.git"
-  },
-  "author": "Roderick Yen",
-  "license": "BSD-2-Clause",
-  "bugs": {
-    "url": "https://github.com/rhsyen/potswap-api/issues"
-  }
+    "name": "potswap-api",
+    "version": "0.0.0",
+    "description": "RESTful API for the PotSwap app",
+    "main": "server.js",
+    "dependencies": {
+        "bcrypt": "^0.8.6",
+        "body-parser": "^1.15.1",
+        "dotenv": "^2.0.0",
+        "express": "^4.13.4",
+        "express-bearer-token": "^2.1.0",
+        "jsonwebtoken": "^7.0.0",
+        "mongoose": "^4.4.19",
+        "morgan": "^1.7.0"
+    },
+    "devDependencies": {},
+    "scripts": {
+        "test": "echo \"Error: no test specified\" && exit 1"
+    },
+    "repository": {
+        "type": "git",
+        "url": "https://github.com/rhsyen/potswap-api.git"
+    },
+    "author": "Roderick Yen",
+    "license": "BSD-2-Clause",
+    "bugs": {
+        "url": "https://github.com/rhsyen/potswap-api/issues"
+    }
 }

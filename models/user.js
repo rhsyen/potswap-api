@@ -9,15 +9,15 @@ function setPassword(val) {
 }
 
 var UserSchema = new Schema({
-  email: {
-      type: String,
-      unique: true
-  },
-  password: {
-      type: String,
-      set: setPassword
-  },
-  name: String
+    email: {
+        type: String,
+        unique: true
+    },
+    password: {
+        type: String,
+        set: setPassword
+    },
+    name: String
 });
 
 module.exports = mongoose.model('User', UserSchema);
