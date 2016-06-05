@@ -1,27 +1,26 @@
-// server.js
-
-// BASE SETUP
+// SETUP
 // =============================================================================
 
-// call the packages we need
-var express = require('express'); // call express
-var app = express(); // define our app using express
+// packages
+var express = require('express');
+var app = express();
 var bodyParser = require('body-parser');
-var User = require('./app/models/user');
 var mongoose = require('mongoose');
 var bcrypt = require('bcrypt');
+var jwt = require('jsonwebtoken');
+var morgan = require('morgan');
+// models
+var User = require('./app/models/user');
+// others
+var config = require('./config');
 
-// configure app to use bodyParser()
-// this will let us get the data from a POST
-app.use(bodyParser.urlencoded({
-    extended: true
-}));
+// configuration
+var port = process.env.PORT || 8080;
+mongoose.connect(config.database);
+app.set('mySecret', config.secret);
+app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
-
-var port = process.env.PORT || 8080; // set our port
-
-mongoose.connect('mongodb://potswapadmin:potswap@ds019882.mlab.com:19882/potswapdb');
-
+app.use(morgan('dev'));
 
 // ROUTES
 // =============================================================================
@@ -38,7 +37,8 @@ router.route('/users')
                 res.send(err);
             } else {
                 res.json({
-                    message: 'User created'
+                    message: 'User created',
+                    data: user
                 });
             }
         });
@@ -52,8 +52,9 @@ router.route('/users')
         });
     });
 
-router.route('/registration')
+router.route('/authenticate')
     .post(function(req, res) { // Log in
+        // body.email, body.password required
         User.findOne({
             'email' : req.body.email
         }, function(err, user) {
@@ -64,7 +65,14 @@ router.route('/registration')
                     if (err || !matched) {
                         res.status(401).send(err);
                     } else {
-                        res.send({ accessToken: 'someToken' });
+                        // Successfully found user
+                        var token = jwt.sign(user, app.get('mySecret'), {
+                            expiresIn: '2h'
+                        });
+                        res.send({
+                            success: true,
+                            accessToken: token
+                        });
                     }
                 });
             }
