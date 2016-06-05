@@ -29,7 +29,8 @@ app.use(morgan('dev'));
 // =============================================================================
 app.use('/api', require('./controllers/users'));
 app.use('/api', require('./controllers/authenticate'));
-app.use('/api', require('./middleware/tokens'));
+//app.use('/api', require('./middleware/tokens'));
+app.use('/api', require('./controllers/items'));
 
 // START THE SERVER
 // =============================================================================
