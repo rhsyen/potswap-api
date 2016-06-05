@@ -9,6 +9,7 @@ var mongoose = require('mongoose');
 var bcrypt = require('bcrypt');
 var jwt = require('jsonwebtoken');
 var morgan = require('morgan');
+var bearerToken = require('express-bearer-token');
 // models
 var User = require('./app/models/user');
 // others
@@ -20,11 +21,14 @@ mongoose.connect(config.database);
 app.set('mySecret', config.secret);
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
+app.use(bearerToken());
 app.use(morgan('dev'));
 
 // ROUTES
 // =============================================================================
 var router = express.Router(); // get an instance of the express Router
+
+
 
 router.route('/users')
     .post(function(req, res) { // Create new user
@@ -78,7 +82,30 @@ router.route('/authenticate')
             }
         });
     });
-
+// Authentication middleware
+router.use(function(req, res) {
+  var token = req.body.token || req.query.token || req.headers['x-access-token'] || req.token;
+    console.log(token);
+    if (token) {
+        jwt.verify(token, app.get('mySecret'), function(err, decoded) {
+            if (err) {
+                res.send(err);
+            } else {
+                req.decoded = decoded;
+                req.next();
+            }
+        });
+    } else {
+        res.status(403).send({
+            success: false,
+            message: 'No token provided'
+        });
+    }
+});
+router.route('/')
+    .get(function(req, res) {
+        res.send('Welcome!');
+    });
 // REGISTER OUR ROUTES
 // =============================================================================
 app.use('/api', router);
