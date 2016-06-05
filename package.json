@@ -5,10 +5,12 @@
   "main": "server.js",
   "dependencies": {
     "bcrypt": "^0.8.6",
+    "body-parser": "^1.15.1",
+    "express": "^4.13.4",
     "express-bearer-token": "^2.1.0",
     "jsonwebtoken": "^7.0.0",
-    "morgan": "^1.7.0",
-    "restify": "~4.0.4"
+    "mongoose": "^4.4.19",
+    "morgan": "^1.7.0"
   },
   "devDependencies": {},
   "scripts": {
