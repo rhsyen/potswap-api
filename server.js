@@ -27,7 +27,7 @@ mongoose.connect('mongodb://potswapadmin:potswap@ds019882.mlab.com:19882/potswap
 // =============================================================================
 var router = express.Router(); // get an instance of the express Router
 
-router.route('/records')
+router.route('/users')
     .post(function(req, res) { // Create new user
         var user = new User();
         user.email = req.body.email;
@@ -52,7 +52,7 @@ router.route('/records')
         });
     });
 
-router.route('/users')
+router.route('/registration')
     .post(function(req, res) { // Log in
         User.findOne({
             'email' : req.body.email
